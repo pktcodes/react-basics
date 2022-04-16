@@ -1,56 +1,70 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import "./index.css";
 
 //Creating the variables
-const firstBook = {
-  img: "https://images-na.ssl-images-amazon.com/images/I/8144Vic9C5L._AC_UL200_SR200,200_.jpg",
-  title: "I Love You to the Moon and Back",
-  author: "Amelia Hepworth",
-};
+const books = [
+  {
+    id: 1,
+    img: "https://images-na.ssl-images-amazon.com/images/I/8144Vic9C5L._AC_UL200_SR200,200_.jpg",
+    title: "I Love You to the Moon and Back",
+    author: "Amelia Hepworth",
+  },
 
-const secondBook = {
-  img: "https://images-na.ssl-images-amazon.com/images/I/81WZ6QvGZ2L._AC_UL200_SR200,200_.jpg",
-  title: "It's Not Easy Being a Bunny",
-  author: "Marilyn Sadler",
-};
+  {
+    id: 2,
+    img: "https://images-na.ssl-images-amazon.com/images/I/81WZ6QvGZ2L._AC_UL200_SR200,200_.jpg",
+    title: "It's Not Easy Being a Bunny",
+    author: "Marilyn Sadler",
+  },
+  {
+    id: 3,
+    img: "https://images-na.ssl-images-amazon.com/images/I/613KCs7szvL._AC_UL200_SR200,200_.jpg",
+    title: "Ugly Love: A Novel",
+    author: "Colleen Hoover",
+  },
+];
 
 //Explicit return
 function BookList() {
   return (
     <section className="booklist">
-      <Book
-        img={firstBook.img}
-        title={firstBook.title}
-        author={firstBook.author}
-      >
-        <p>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Enim
-          blanditiis cupiditate ratione id deserunt et nisi autem, quaerat dolor
-          ipsum.
-        </p>
-      </Book>
-      <Book
-        img={secondBook.img}
-        title={secondBook.title}
-        author={secondBook.author}
-      ></Book>
+      {books.map((book) => {
+        return <Book key={book.id} {...book}></Book>;
+      })}
     </section>
   );
 }
 
 //Implicit return
-const Book = (props) => {
-  console.log(props);
-  const { img, title, author, children } = props;
+const Book = ({ img, title, author }) => {
+  const handleClick = (event) => {
+    console.log(event);
+    console.log(event.target);
+    return alert("Reference got clicked");
+  };
+
+  const handleComplex = (author) => {
+    return console.log(author);
+  };
+
+  const handleMouseOver = () => {
+    console.log(title);
+  };
+
   return (
-    <article className="book">
+    <article className="book" onMouseOver={handleMouseOver}>
       <img src={img} alt="book-img"></img>
       <h1>{title}</h1>
       <h4>{author}</h4>
-      {children}
+      <button onClick={handleClick}>Reference</button>
+      <button onClick={() => handleComplex(author)}>Complex</button>
     </article>
   );
 };
 
-ReactDOM.render(<BookList></BookList>, document.getElementById("root"));
+// ReactDOM.render(<BookList></BookList>, document.getElementById("root"));
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <BookList></BookList>
+);
